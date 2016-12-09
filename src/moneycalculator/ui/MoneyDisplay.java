@@ -4,7 +4,7 @@ import moneycalculator.model.Money;
 
 public interface MoneyDisplay {
     
-    void get();
+    void display(Money money);
     
     
 }

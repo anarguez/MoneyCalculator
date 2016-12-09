@@ -2,11 +2,10 @@ package moneycalculator;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.HeadlessException;
 import java.awt.PopupMenu;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 import moneycalculator.ui.MoneyDialog;
 import moneycalculator.ui.MoneyDisplay;
 import moneycalculator.ui.swing.SwingMoneyDialog;
@@ -18,14 +17,14 @@ public class MainFrame extends JFrame{
     private MoneyDialog moneyDialog;
     
     public MainFrame(){
-        setTitle("Money Calculator");
-        setSize(400, 400);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        add(moneyDialog(), BorderLayout.NORTH);
-        add(moneyDisplay());
-        add(toolbar(),BorderLayout.SOUTH);
-        setVisible(true);
+        this.setTitle("Money Calculator");
+        this.setSize(400, 400);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.add(moneyDialog(), BorderLayout.NORTH);
+        this.add(moneyDisplay(), BorderLayout.CENTER);
+        this.add(toolbar(),BorderLayout.SOUTH);
+        this.setVisible(true);
     }
 
     private Component moneyDialog() {
@@ -41,6 +40,12 @@ public class MainFrame extends JFrame{
     }
 
     private Component toolbar() {
+        JPanel panel = new JPanel();
+        panel.add(calculateButton());
+        return panel;
+    }
+
+    private Component calculateButton() {
         JButton button = new JButton("Calculate");
         return button;
     }

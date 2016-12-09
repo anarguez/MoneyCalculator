@@ -2,7 +2,6 @@ package moneycalculator.ui.swing;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.PopupMenu;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.logging.Level;
@@ -13,19 +12,20 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import moneycalculator.model.Currency;
 import moneycalculator.model.Money;
 import moneycalculator.ui.MoneyDialog;
 
 public class SwingMoneyDialog extends JPanel implements MoneyDialog{
 
-    private String amount = "100";
     private Currency currency;
+    private String amount;
 
     public SwingMoneyDialog() {
         setLayout(new FlowLayout());
-        add(amount());
-        add(currency());
+        this.add(amount());
+        this.add(currency());
     
     }
      
@@ -35,22 +35,24 @@ public class SwingMoneyDialog extends JPanel implements MoneyDialog{
     }
 
     private Component amount() {
-        JTextField field = new JTextField(amount);
-        field.setColumns(10);
-        field.getDocument().addDocumentListener(amountChanged());
-        return field;
+        JTextField textField = new JTextField("1");
+        textField.setColumns(10);
+        textField.getDocument().addDocumentListener(amountChanged());
+        amount = textField.getText();
+        return textField;
     }
 
     private Component currency() {
         JComboBox<Currency> combo = new JComboBox<>(currencies());
         combo.addItemListener(currencyChanged());
+        currency = (Currency) combo.getSelectedItem();
         return combo;
     }
     
     private Currency[] currencies(){
         return new Currency[]{
             new Currency("USD","DÓLAR AMERICANO","$"),
-            new Currency("GBP","LIBRA ESTERLINA","$"),
+            new Currency("GBP","LIBRA ESTERLINA","‎£"),
             new Currency("CAD","DÓLAR CANADIENSE","$"),
         };    
     }
@@ -68,28 +70,29 @@ public class SwingMoneyDialog extends JPanel implements MoneyDialog{
 
     private DocumentListener amountChanged() {
         return new DocumentListener() {
-
             @Override
             public void insertUpdate(DocumentEvent e) {
-                updateAmount(e);
+                amountChanged(e.getDocument());
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                updateAmount(e);
+                amountChanged(e.getDocument());
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                updateAmount(e);
+                amountChanged(e.getDocument());
             }
 
-            private void updateAmount(DocumentEvent e) {
+            private void amountChanged (Document doc) {
                 try {
-                    amount = e.getDocument().getText(0, e.getDocument().getLength());
+                    amount = doc.getText(0, doc.getLength());
                 } catch (BadLocationException ex) {
+                    Logger.getLogger(SwingMoneyDialog.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+           
         };
     }
     
