@@ -9,8 +9,6 @@ import moneycalculator.ui.MoneyDisplay;
 public class SwingMoneyDisplay extends JPanel implements MoneyDisplay{
     private Money money;
 
-   
-
     @Override
     public void display(Money money) {
         this.money = money;

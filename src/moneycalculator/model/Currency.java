@@ -2,9 +2,9 @@ package moneycalculator.model;
 
 public class Currency {
     
-    private String code;
-    private String name;
-    private String symbol;
+    private final String code;
+    private final String name;
+    private final String symbol;
 
     public Currency(String code, String name, String symbol) {
         this.code = code;
@@ -22,6 +22,11 @@ public class Currency {
 
     public String getSymbol() {
         return symbol;
+    }
+    
+    @Override
+    public String toString(){
+        return code;    
     }
     
     

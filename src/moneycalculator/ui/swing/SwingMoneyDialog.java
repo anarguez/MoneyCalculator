@@ -1,7 +1,6 @@
 package moneycalculator.ui.swing;
 
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.logging.Level;
@@ -21,12 +20,12 @@ public class SwingMoneyDialog extends JPanel implements MoneyDialog{
 
     private Currency currency;
     private String amount;
+    private final Currency[] currencies;
 
-    public SwingMoneyDialog() {
-        setLayout(new FlowLayout());
+    public SwingMoneyDialog(Currency[] currencies) {
+        this.currencies = currencies;
         this.add(amount());
         this.add(currency());
-    
     }
      
     @Override
@@ -35,7 +34,7 @@ public class SwingMoneyDialog extends JPanel implements MoneyDialog{
     }
 
     private Component amount() {
-        JTextField textField = new JTextField("1");
+        JTextField textField = new JTextField("100");
         textField.setColumns(10);
         textField.getDocument().addDocumentListener(amountChanged());
         amount = textField.getText();
@@ -43,23 +42,14 @@ public class SwingMoneyDialog extends JPanel implements MoneyDialog{
     }
 
     private Component currency() {
-        JComboBox<Currency> combo = new JComboBox<>(currencies());
+        JComboBox combo = new JComboBox(currencies);
         combo.addItemListener(currencyChanged());
         currency = (Currency) combo.getSelectedItem();
         return combo;
     }
-    
-    private Currency[] currencies(){
-        return new Currency[]{
-            new Currency("USD","DÓLAR AMERICANO","$"),
-            new Currency("GBP","LIBRA ESTERLINA","‎£"),
-            new Currency("CAD","DÓLAR CANADIENSE","$"),
-        };    
-    }
 
     private ItemListener currencyChanged() {
         return new ItemListener() {
-
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.DESELECTED) return;
@@ -89,7 +79,6 @@ public class SwingMoneyDialog extends JPanel implements MoneyDialog{
                 try {
                     amount = doc.getText(0, doc.getLength());
                 } catch (BadLocationException ex) {
-                    Logger.getLogger(SwingMoneyDialog.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
            
